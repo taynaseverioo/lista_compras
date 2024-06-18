@@ -1,0 +1,12 @@
+{"nome": "usario", "evento": "falha_login", "data/hora": "2024-06-01 14:08:21", "ip": "10.0.0.199"}
+{"nome": "Renan", "evento": "sucesso_login", "data/hora": "2024-06-01 14:13:16", "ip": "10.0.0.199"}
+{"nome": "Tayna", "evento": "sucesso_login", "data/hora": "2024-06-15 21:13:07", "ip": "192.168.0.107"}
+{"nome": "Tayna", "evento": "sucesso_login", "data/hora": "2024-06-15 23:42:30", "ip": 5184}
+{"nome": "Tayna", "evento": "falha_login", "data/hora": "2024-06-15 23:42:34", "ip": 5184}
+{"nome": "Tayna", "evento": "sucesso_login", "data/hora": "2024-06-17 17:56:16", "ip": 5452}
+{"nome": "tayna", "evento": "falha_login", "data/hora": "2024-06-17 19:08:10", "ip": 21508}
+{"nome": "Tayna", "evento": "sucesso_login", "data/hora": "2024-06-17 19:08:48", "ip": 21508}
+{"nome": "erick", "evento": "falha_login", "data/hora": "2024-06-17 20:28:44", "ip": 10312}
+{"nome": "Tayna", "evento": "sucesso_login", "data/hora": "2024-06-17 20:29:37", "ip": 10312}
+{"nome": "", "evento": "sucesso_registro", "data/hora": "2024-06-17 20:30:13", "ip": 10312}
+{"nome": "Tayna", "evento": "sucesso_login", "data/hora": "2024-06-17 20:31:35", "ip": 16708}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 70%;
+        }
+        .list-selector {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .list-selector select {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 70%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Compras</h1>
+        <div class="list-selector">
+            <select id="listaSelect" onchange="mudarLista()">
+                <option value="default">Lista Padrão</option>
+            </select>
+            <button onclick="criarNovaLista()">Nova Lista</button>
+        </div>
+        <input type="text" id="itemInput" placeholder="Digite um item...">
+        <button onclick="adicionarItem()">Adicionar Item</button>
+        <ul id="listaCompras">
+            <!-- Itens da lista serão adicionados dinamicamente aqui -->
+        </ul>
+        <button onclick="excluirLista()">Excluir Lista</button>
+        <button onclick="salvarListas()">Salvar Listas</button>
+    </div>
+
+    <script>
+        var listas = carregarListas();
+        var listaAtual = "default";
+
+        function adicionarItem() {
+            var itemInput = document.getElementById("itemInput");
+            var itemValor = itemInput.value.trim();
+            
+            if (itemValor !== "") {
+                listas[listaAtual].push(itemValor);
+                atualizarLista();
+                itemInput.value = "";
+            }
+        }
+
+        function removerItem(botao) {
+            var itemIndex = Array.from(botao.parentNode.parentNode.children).indexOf(botao.parentNode);
+            listas[listaAtual].splice(itemIndex, 1);
+            atualizarLista();
+        }
+
+        function atualizarLista() {
+            var lista = document.getElementById("listaCompras");
+            lista.innerHTML = "";
+            listas[listaAtual].forEach(function(item) {
+                var novoItem = document.createElement("li");
+                novoItem.innerHTML = `
+                    <span>${item}</span>
+                    <button onclick="removerItem(this)">Remover</button>
+                `;
+                lista.appendChild(novoItem);
+            });
+        }
+
+        function mudarLista() {
+            var select = document.getElementById("listaSelect");
+            listaAtual = select.value;
+            atualizarLista();
+        }
+
+        function criarNovaLista() {
+            var novoNome = prompt("Digite o nome da nova lista:");
+            if (novoNome && !listas[novoNome]) {
+                listas[novoNome] = [];
+                var select = document.getElementById("listaSelect");
+                var novaOpcao = document.createElement("option");
+                novaOpcao.value = novoNome;
+                novaOpcao.textContent = novoNome;
+                select.appendChild(novaOpcao);
+                select.value = novoNome;
+                mudarLista();
+            } else {
+                alert("Nome de lista inválido ou já existente.");
+            }
+        }
+
+        function salvarListas() {
+            localStorage.setItem("listasCompras", JSON.stringify(listas));
+            alert("Listas salvas com sucesso!");
+        }
+
+        function carregarListas() {
+            var listasSalvas = localStorage.getItem("listasCompras");
+            return listasSalvas ? JSON.parse(listasSalvas) : { "default": [] };
+        }
+
+        function excluirLista() {
+            if (listaAtual === "default") {
+                alert("A lista padrão não pode ser excluída.");
+                return;
+            }
+
+            var confirmar = confirm(`Tem certeza que deseja excluir a lista "${listaAtual}"?`);
+            if (confirmar) {
+                delete listas[listaAtual];
+                var select = document.getElementById("listaSelect");
+                select.removeChild(select.options[select.selectedIndex]);
+                listaAtual = "default";
+                select.value = "default";
+                atualizarLista();
+            }
+        }
+
+        // Inicializa as listas salvas no seletor ao carregar a página
+        window.onload = function() {
+            var select = document.getElementById("listaSelect");
+            for (var lista in listas) {
+                if (listas.hasOwnProperty(lista)) {
+                    var opcao = document.createElement("option");
+                    opcao.value = lista;
+                    opcao.textContent = lista;
+                    select.appendChild(opcao);
+                }
+            }
+            atualizarLista();
+        };
+    </script>
+</body>
+</html>
